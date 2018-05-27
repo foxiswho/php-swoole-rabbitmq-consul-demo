@@ -14,3 +14,21 @@ https://github.com/top-think/think-swoole
 ```SHELL
 composer require topthink/think-swoole
 ```
+
+# 测试案例
+当前根目录下执行
+```SHELL
+php public/index.php service/demo/start
+```
+在新的终端中执行：
+```SEHLL
+telnet 127.0.0.1 9501
+```
+然后在终端中输入 `hello`
+
+终端打印出
+```SHELL
+onReceive: hello
+```
+
+更多的请看 https://www.kancloud.cn/chunice/think-swoole
