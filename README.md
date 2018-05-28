@@ -17,6 +17,7 @@ composer require topthink/think-swoole
 
 ## 安装 consul API 扩展
 https://www.consul.io/api/libraries-and-sdks.html
+https://github.com/dcarbone/php-consul-api
 ```SHELL
 composer require dcarbone/php-consul-api
 ```
