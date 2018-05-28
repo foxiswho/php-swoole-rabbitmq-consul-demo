@@ -15,6 +15,12 @@ https://github.com/top-think/think-swoole
 composer require topthink/think-swoole
 ```
 
+## 安装 consul API 扩展
+https://www.consul.io/api/libraries-and-sdks.html
+```SHELL
+composer require dcarbone/php-consul-api
+```
+
 # 测试案例
 当前根目录下执行
 ```SHELL
