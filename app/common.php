@@ -10,3 +10,21 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+/**通用返回
+ * @param       $msg
+ * @param bool  $success
+ * @param array $data
+ * @return array
+ */
+function ret($msg, $success = false, $data = [])
+{
+    $ret = [];
+    if ($data) {
+        if (is_array($data)) {
+            $ret = $data;
+        }
+    }
+    $ret['msg'] = $msg;
+    $ret['ret'] = $success ? 1 : 0;
+    return $ret;
+}

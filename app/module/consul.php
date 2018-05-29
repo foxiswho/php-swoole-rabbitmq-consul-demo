@@ -1,6 +1,6 @@
 <?php
 
-namespace app\util;
+namespace app\module;
 
 use DCarbone\PHPConsulAPI\QueryOptions;
 
@@ -10,7 +10,7 @@ class consul
      * @var \DCarbone\PHPConsulAPI\Consul
      * @return \DCarbone\PHPConsulAPI\Consul
      */
-    private static $consul=null;
+    private static $consul = null;
 
     public static function getConfig()
     {
@@ -71,5 +71,28 @@ class consul
     public static function getServices($service, $tag = '', $passingOnly = false, QueryOptions $options = null)
     {
         return self::getConsul()->Health()->service($service, $tag, $passingOnly, $options);
+    }
+
+    /**获取服务 单个服务
+     * @param                   $service
+     * @param string            $tag
+     * @param bool              $passingOnly
+     * @param QueryOptions|null $options
+     * @return bool|object
+     *  object->ID
+     *  object->Address
+     *  object->Port
+     *  object->Service
+     *
+     */
+    public static function getServicesOne($service, $tag = '', $passingOnly = false, QueryOptions $options = null)
+    {
+        $services = self::getConsul()->Health()->service($service, $tag, $passingOnly, $options);
+        if (isset($services[0]) && isset($services[0][0])) {
+            if (isset($services[0][0]->Service)) {
+                return $services[0][0]->Service;
+            }
+        }
+        return false;
     }
 }
