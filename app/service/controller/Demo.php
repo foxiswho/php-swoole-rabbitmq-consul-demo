@@ -6,7 +6,7 @@ use think\swoole\Server;
 class Demo extends Server
 {
     // 监听所有地址
-    protected $host = '127.0.0.1';
+    protected $host = '0.0.0.0';
     // 监听 9501 端口
     protected $port = 9501;
     // 指定运行模式为多进程
