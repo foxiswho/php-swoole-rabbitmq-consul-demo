@@ -29,6 +29,7 @@ class ServiceDemoMqClient
             if (!$client->send("hello world")) {
                 throw new \Exception("swoole_client send failed.");
             }
+
             //从服务器接收数据
             $data = $client->recv();
             if (!$data) {

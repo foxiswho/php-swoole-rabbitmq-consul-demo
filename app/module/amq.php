@@ -65,9 +65,9 @@ class amq
         if (!isset(self::$conn)) {
             //配置信息
             if (!$config) {
-                $config = config('amq');
+                $config = config('amq.');
             } elseif (is_array($config)) {
-                $config = array_merge(config('amq'), $config);
+                $config = array_merge(config('amq.'), $config);
             }
             //创建连接和channel
             self::$conn = new \AMQPConnection($config);
