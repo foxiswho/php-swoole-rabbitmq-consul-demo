@@ -23,6 +23,22 @@ https://github.com/dcarbone/php-consul-api
 composer require dcarbone/php-consul-api
 ```
 
+# 服务
+```SHELL
+#PHP服务
+php public/index.php service/demo/start
+
+#生产者 发出信息
+php public/index.php mq/publisher.demo/index
+
+#订阅者 处理消息
+php public/index.php mq/subscriber.demo/index
+```
+浏览器
+```angular2html
+http://localhost/demo/service_demo_client/index
+```
+
 # 测试案例
 当前根目录下执行
 ```SHELL

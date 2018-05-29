@@ -2,7 +2,7 @@
 
 namespace app\service\controller;
 use think\swoole\Server;
-
+//默认action start
 class Demo extends Server
 {
     // 监听所有地址
