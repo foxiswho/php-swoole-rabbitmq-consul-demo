@@ -1,29 +1,31 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: fox
- * Date: 2018/5/28
- * Time: 上午9:55
- */
 
-namespace app\service\controller;
+namespace app\util;
 
-class DemoConsul
+use DCarbone\PHPConsulAPI\QueryOptions;
+
+class consul
 {
-    public function index()
+    /**
+     * @var \DCarbone\PHPConsulAPI\Consul
+     * @return \DCarbone\PHPConsulAPI\Consul
+     */
+    private static $consul=null;
+
+    public static function getConfig()
     {
-        $proxyClient = new \GuzzleHttp\Client(['proxy' => 'whatever proxy you want']);
+        $proxyClient = new \GuzzleHttp\Client();
         $config      = new \DCarbone\PHPConsulAPI\Config(['HttpClient'         => $proxyClient,
                                                           // [required] Client conforming to GuzzleHttp\ClientInterface
-                                                          'Address'            => 'address of server',
+                                                          'Address'            => config('consul.address'),
                                                           // [required]
-                                                          'Scheme'             => 'http or https',
+                                                          'Scheme'             => 'http',
                                                           // [optional] defaults to "http"
-                                                          'Datacenter'         => 'name of datacenter',
+                                                          'Datacenter'         => config('consul.data_center'),
                                                           // [optional]
-                                                          'HttpAuth'           => 'user:pass',
-                                                          // [optional]
-                                                          'Token'              => 'auth token',
+                                                          'HttpAuth'           => '',
+                                                          // [optional] user:pass
+                                                          'Token'              => '',
                                                           // [optional] default auth token to use
                                                           'TokenInHeader'      => false,
                                                           // [optional] specifies whether to send the token in the header or query string
@@ -36,11 +38,38 @@ class DemoConsul
                                                           'KeyFile'            => '',
                                                           // [optional] path to client private key.  if set, requires CertFile also be set
         ]);
-        $consul = new \DCarbone\PHPConsulAPI\Consul($config);
-        list($kv_list, $qm, $err) = $consul->KV->keys();
-        if (null !== $err) {
-            die($err);
+        return $config;
+    }
+
+    /**
+     * @return \DCarbone\PHPConsulAPI\Consul
+     */
+    public static function getConsul()
+    {
+        if (!isset(self::$consul)) {
+            self::$consul = new \DCarbone\PHPConsulAPI\Consul(self::getConfig());
         }
-        var_dump($kv_list);
+        return self::$consul;
+    }
+
+    public static function getKeys()
+    {
+        return self::getConsul()->KV()->keys();
+    }
+
+    /**
+     * @return array
+     */
+    public static function getServicesAll()
+    {
+        return self::getConsul()->Agent()->services();
+    }
+
+    /**获取服务
+     * @return array
+     */
+    public static function getServices($service, $tag = '', $passingOnly = false, QueryOptions $options = null)
+    {
+        return self::getConsul()->Health()->service($service, $tag, $passingOnly, $options);
     }
 }
