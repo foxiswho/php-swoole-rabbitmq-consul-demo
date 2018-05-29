@@ -6,7 +6,7 @@ use think\swoole\Server;
 class Demo extends Server
 {
     // 监听所有地址
-    protected $host = '0.0.0.0';
+    protected $host = '127.0.0.1';
     // 监听 9501 端口
     protected $port = 9501;
     // 指定运行模式为多进程
@@ -20,7 +20,7 @@ class Demo extends Server
          *  业务代码是全异步非阻塞的，这里设置为CPU的1-4倍最合理
          *  业务代码为同步阻塞，需要根据请求响应时间和系统负载来调整
          */
-        'worker_num' => 4,
+        'worker_num' => 1,
         // 守护进程化
         'daemonize'  => false,
         // 监听队列的长度
