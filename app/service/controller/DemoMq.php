@@ -39,7 +39,10 @@ class DemoMq extends Server
     public function onReceive(\swoole_server $server, $fd, $from_id, $data)
     {
         //使用 注册中心获取
-        $pub = amqConsul::getServicesOne('RabbitMQ')->getAmq();
+        $consul=amqConsul::getServicesOne('RabbitMQ');
+        trace($consul->getService());
+        print_r($consul->getService());
+        $pub = $consul->getAmq();
         //配置信息
         //        $pub = amq::init();
         $pub->getChannel();
