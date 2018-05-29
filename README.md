@@ -37,6 +37,8 @@ php public/index.php mq/subscriber.demo/index
 浏览器
 ```angular2html
 http://localhost/demo/service_demo_client/index
+或
+http://localhost/demo/service_demo_mq_client/index
 ```
 
 # 测试案例
