@@ -22,7 +22,7 @@ class DemoMq extends Server
                           *  业务代码是全异步非阻塞的，这里设置为CPU的1-4倍最合理
                           *  业务代码为同步阻塞，需要根据请求响应时间和系统负载来调整
                           */
-                         'worker_num' => 4,
+                         'worker_num' => 1,
                          // 守护进程化
                          'daemonize'  => false,
                          // 监听队列的长度
@@ -41,17 +41,26 @@ class DemoMq extends Server
         //使用 注册中心获取
         $consul=amqConsul::getServicesOne('RabbitMQ');
         trace($consul->getService());
-        print_r($consul->getService());
+        trace('swoole_server onReceive');
         $pub = $consul->getAmq();
         //配置信息
         //        $pub = amq::init();
         $pub->getChannel();
         $pub->getExchange();
         $pub->setExchangeName('exchange_php');//交换机名
+        $pub->setExchangeType(AMQP_EX_TYPE_DIRECT);//direct类型
+        $pub->setExchangeFlags(AMQP_DURABLE); //持久化
+        $pub->setExchangeDeclareExchange();//声明一个新交换机，如果这个交换机已经存在了，就不需要再调用
+        $pub->getQueue();
+        $pub->setQueueName('queue_php');
+        $pub->setQueueFlags(AMQP_DURABLE); //持久化
+        $pub->setQueueDeclareQueue();//如果该队列已经存在不用再调用这个方法了
         //消息内容
         $message = "这是消息 TEST MESSAGE! " . date('Y-m-d H:i:s');
-        echo $pub->ExchangePublish($message, 'route_php') . "\n";
-        $pub->disconnect();
+        $ret= $pub->ExchangePublish($message, 'route_php') . "\n";
+        trace('ExchangePublish'.var_export($ret,true));
+        //$pub->disconnect();
+        $message = "这是消息 TEST MESSAGE! " . date('Y-m-d H:i:s');
         $server->send($fd, 'onReceive: ' . $data.":".$message);
     }
 }

@@ -39,37 +39,49 @@ class DemoMqSub extends Server
      */
     public function onReceive(\swoole_server $server, $fd, $from_id, $data)
     {
+        trace("onReceive:DemoMqSub");
         //使用 注册中心获取
-        $sub = amqConsul::getServicesOne('RabbitMQ')->getAmq();
+        $consul = amqConsul::getServicesOne('RabbitMQ');
+        trace($consul->getService());
+        $sub=$consul->getAmq();
+        Log::write('实时写入:'.var_export($consul->getService(),true));
         //        $sub = amq::init();
         $sub->getChannel();
         $sub->getExchange();
         $sub->setExchangeName('exchange_php');//交换机名
         $sub->setExchangeType(AMQP_EX_TYPE_DIRECT);//direct类型
         $sub->setExchangeFlags(AMQP_DURABLE); //持久化
-        $sub->setExchangeDeclareExchange();
-        $sub->getQueue();
+        $queue=$sub->getQueue();
         $sub->setQueueName('queue_php');
-        $sub->setQueueFlags(AMQP_DURABLE); //持久化
-        $sub->setQueueDeclareQueue();
-        $sub->setQueueBind('queue_php', 'route_php');
-        /**
-         * 消费回调函数
-         * 处理消息
-         */
-        function processMessage($envelope, $queue)
-        {
+        $sub->setQueueBind('exchange_php', 'route_php');
+        $envelope= $sub->QueueGet();
+        if($envelope){
+            $res = $queue->ack($envelope->getDeliveryTag());
             $msg = $envelope->getBody();
-            echo $msg . "\n"; //处理消息
-            Log::write('实时写入:'.$msg,'notice');
-            $queue->ack($envelope->getDeliveryTag()); //手动发送ACK应答
+            Log::write('实时写入:'.var_export($msg,true));
+            trace('实时写入:'.var_export($msg,true));
+        }else{
+            trace('实时写入:发生错误');
         }
 
-        while (true) {
-            $sub->setQueueConsume('processMessage');
-            //$q->consume('processMessage', AMQP_AUTOACK); //自动ACK应答
-        }
-        $sub->close();
-        $server->send($fd, 'onReceive: ' . $data);
+
+//        /**
+//         * 消费回调函数
+//         * 处理消息
+//         */
+//        function processMessage($envelope, $queue)
+//        {
+//            $msg = $envelope->getBody();
+//            echo $msg . "\n"; //处理消息
+//            Log::write('实时写入:'.$msg,'notice');
+//            $queue->ack($envelope->getDeliveryTag()); //手动发送ACK应答
+//        }
+//
+//        while (true) {
+//            $sub->setQueueConsume('processMessage');
+//            //$q->consume('processMessage', AMQP_AUTOACK); //自动ACK应答
+//        }
+        //$sub->close();
+        $server->send($fd, 'onReceive.xxxxxxxx: ' . $data);
     }
 }

@@ -25,6 +25,7 @@ class ComposerStaticInit7861e09299ced4b6e56094d945d85f0a
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
+            'PhpAmqpLib\\' => 11,
         ),
         'G' => 
         array (
@@ -54,6 +55,10 @@ class ComposerStaticInit7861e09299ced4b6e56094d945d85f0a
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'PhpAmqpLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-amqplib/php-amqplib/PhpAmqpLib',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
