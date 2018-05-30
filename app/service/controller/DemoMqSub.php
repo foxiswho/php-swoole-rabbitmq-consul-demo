@@ -3,6 +3,7 @@
 namespace app\service\controller;
 
 use app\module\amqConsul;
+use think\facade\Log;
 use think\swoole\Server;
 
 //默认action start
@@ -60,6 +61,7 @@ class DemoMqSub extends Server
         {
             $msg = $envelope->getBody();
             echo $msg . "\n"; //处理消息
+            Log::write('实时写入:'.$msg,'notice');
             $queue->ack($envelope->getDeliveryTag()); //手动发送ACK应答
         }
 
