@@ -14,7 +14,8 @@ class MqSub
         $consul = amqConsul::getServicesOne('RabbitMQ');
         $config = $consul->getService();
         trace($consul->getService());
-        trace('swoole_server onReceive');
+        trace('MqSub::::');
+        print_r($config);
         $connection = new AMQPStreamConnection($config->Address, $config->Port, config('amq.login'), config('amq.password'));
         $channel    = $connection->channel();
         $channel->queue_declare('queue_php', false, true, false, false);
