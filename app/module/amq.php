@@ -202,4 +202,9 @@ class amq
     {
         return $this->getQueue()->consume($callback, $flags, $consumerTag);
     }
+
+    public function QueueGet($flags = AMQP_NOPARAM)
+    {
+        return $this->getQueue()->get($flags);
+    }
 }

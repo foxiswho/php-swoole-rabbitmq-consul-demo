@@ -31,6 +31,8 @@ class ServiceDemoClient
             }
             //从服务器接收数据
             $data = $client->recv();
+            //$data = $client->recv(65535, \swoole_client::MSG_PEEK | \swoole_client::MSG_WAITALL);
+
             if (!$data) {
                 throw new \Exception("swoole_client recv failed.");
             }
