@@ -13,7 +13,7 @@ class MqPub extends Server
     // 监听所有地址
     protected $host = '0.0.0.0';
     // 监听 9501 端口
-    protected $port = 9505;
+    protected $port = 9562;
     // 指定运行模式为多进程
     protected $mode = SWOOLE_PROCESS;
     // 指定 socket 的类型为 ipv4 的 tcp socket
