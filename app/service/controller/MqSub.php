@@ -18,13 +18,18 @@ class MqSub
         print_r($config);
         $connection = new AMQPStreamConnection($config->Address, $config->Port, config('amq.login'), config('amq.password'));
         $channel    = $connection->channel();
-        $channel->queue_bind('queue_php', 'exchange_php','route_php');
         $channel->queue_declare('queue_php', false, true, false, false);
+        $channel->exchange_declare('exchange_php','direct',false,true);
+        $channel->queue_bind('queue_php', 'exchange_php','route_php');
+
+        //
         $callback = function ($msg) {
             $str= ' [x] Received '.$msg->body."\n";
             trace('basic_consume'.$str);
             Log::write('实时写入basic_consume:'.var_export($str,true));
-            $msg->delivery_info->channel->basic_ack($msg->delivery_info->delivery_tag);
+            if(isset($msg->delivery_info->delivery_tag)){
+                $msg->delivery_info->channel->basic_ack($msg->delivery_info->delivery_tag);
+            }
         };
         //设置参数prefetch_count = 1。
         //这告诉RabbitMQ不要在一个时间给一个消费者多个消息。或者，换句话说，在处理和确认以前的消息之前，不要向消费者发送新消息
@@ -33,5 +38,7 @@ class MqSub
         while (count($channel->callbacks)) {
             $channel->wait();
         }
+        $channel->close();
+        $connection->close();
     }
 }
