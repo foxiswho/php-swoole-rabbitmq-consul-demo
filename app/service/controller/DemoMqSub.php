@@ -56,10 +56,10 @@ class DemoMqSub extends Server
         $sub->setQueueBind('exchange_php', 'route_php');
         $envelope= $sub->QueueGet();
         if($envelope){
-            $res = $queue->ack($envelope->getDeliveryTag());
             $msg = $envelope->getBody();
             Log::write('实时写入:'.var_export($msg,true));
             trace('实时写入:'.var_export($msg,true));
+            $res = $queue->ack($envelope->getDeliveryTag());
         }else{
             trace('实时写入:发生错误');
         }

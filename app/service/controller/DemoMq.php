@@ -55,6 +55,7 @@ class DemoMq extends Server
         $pub->setQueueName('queue_php');
         $pub->setQueueFlags(AMQP_DURABLE); //持久化
         $pub->setQueueDeclareQueue();//如果该队列已经存在不用再调用这个方法了
+        $pub->setQueueBind('exchange_php','route_php');
         //消息内容
         $message = "这是消息 TEST MESSAGE! " . date('Y-m-d H:i:s');
         $ret= $pub->ExchangePublish($message, 'route_php') . "\n";
