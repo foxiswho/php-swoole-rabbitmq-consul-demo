@@ -48,6 +48,7 @@ class MqPub extends Server
 
         $connection = new AMQPStreamConnection($config->Address, $config->Port, config('amq.login'), config('amq.password'));
         $channel = $connection->channel();
+        $channel->exchange_declare('exchange_php','direct',false,true);
         $channel->queue_declare('queue_php', false, true, false, false);
         $message = "这是消息 TEST MESSAGE! " . date('Y-m-d H:i:s');
         $AMQPMessage=new AMQPMessage($message,['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
