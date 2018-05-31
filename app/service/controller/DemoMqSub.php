@@ -9,7 +9,7 @@ use think\facade\Log;
 class DemoMqSub
 {
 
-    public function star()
+    public function start()
     {
         trace("onReceive:DemoMqSub");
         //使用 注册中心获取
