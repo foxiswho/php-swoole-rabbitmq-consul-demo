@@ -50,11 +50,11 @@ class MqPub extends Server
         $channel = $connection->channel();
         $channel->queue_declare('queue_php', false, true, false, false);
         $message = "这是消息 TEST MESSAGE! " . date('Y-m-d H:i:s');
-        $ret= $channel->basic_publish(new AMQPMessage($message), 'exchange_php', 'route_php');
+        $AMQPMessage=new AMQPMessage($message,['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
+        $ret= $channel->basic_publish($AMQPMessage, 'exchange_php', 'route_php');
         trace('ExchangePublish'.var_export($ret,true));
         $channel->close();
         $connection->close();
-        //$pub->disconnect();
         $message = "这是消息 TEST MESSAGE! " . date('Y-m-d H:i:s');
         $server->send($fd, 'onReceive: ' . $data.":".$message);
     }

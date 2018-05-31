@@ -24,6 +24,9 @@ class MqSub
             Log::write('实时写入basic_consume:'.var_export($str,true));
             $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
         };
+        //设置参数prefetch_count = 1。
+        //这告诉RabbitMQ不要在一个时间给一个消费者多个消息。或者，换句话说，在处理和确认以前的消息之前，不要向消费者发送新消息
+        $channel->basic_qos(null, 1, null);
         $channel->basic_consume('queue_php', '', false, true, false, false, $callback);
         while (count($channel->callbacks)) {
             $channel->wait();
