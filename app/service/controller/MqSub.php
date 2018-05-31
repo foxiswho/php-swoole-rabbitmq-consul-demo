@@ -4,6 +4,7 @@ namespace app\service\controller;
 
 use app\module\amqConsul;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use think\facade\Log;
 
 class MqSub
 {
@@ -18,7 +19,9 @@ class MqSub
         $channel    = $connection->channel();
         $channel->queue_declare('queue_php', false, true, false, false);
         $callback = function ($msg) {
-            echo ' [x] Received ', $msg->body, "\n";
+            $str= ' [x] Received '.$msg->body."\n";
+            trace('basic_consume'.$str);
+            Log::write('实时写入basic_consume:'.var_export($str,true));
             $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
         };
         $channel->basic_consume('queue_php', '', false, true, false, false, $callback);
