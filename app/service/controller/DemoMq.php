@@ -58,7 +58,7 @@ class DemoMq extends Server
         $pub->setQueueBind('exchange_php','route_php');
         //消息内容
         $message = "这是消息 TEST MESSAGE! " . date('Y-m-d H:i:s');
-        $ret= $pub->ExchangePublish($message, 'route_php') . "\n";
+        $ret= $pub->ExchangePublish($message, 'route_php',AMQP_DURABLE) . "\n";
         trace('ExchangePublish'.var_export($ret,true));
         //$pub->disconnect();
         $message = "这是消息 TEST MESSAGE! " . date('Y-m-d H:i:s');

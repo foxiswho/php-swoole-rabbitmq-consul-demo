@@ -19,13 +19,13 @@ class DemoMqSub
         Log::write('实时写入:'.var_export($consul->getService(),true));
         //        $sub = amq::init();
         $sub->getChannel();
+        $queue=$sub->getQueue();
+        $sub->setQueueName('queue_php');
+        $sub->setQueueBind('exchange_php', 'route_php');
         $sub->getExchange();
         $sub->setExchangeName('exchange_php');//交换机名
         $sub->setExchangeType(AMQP_EX_TYPE_DIRECT);//direct类型
         $sub->setExchangeFlags(AMQP_DURABLE); //持久化
-        $queue=$sub->getQueue();
-        $sub->setQueueName('queue_php');
-        $sub->setQueueBind('exchange_php', 'route_php');
         $envelope= $sub->QueueGet();
         if($envelope){
             $msg = $envelope->getBody();

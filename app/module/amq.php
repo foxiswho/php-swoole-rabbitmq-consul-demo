@@ -69,6 +69,8 @@ class amq
             } elseif (is_array($config)) {
                 $config = array_merge(config('amq.'), $config);
             }
+            trace("getConn================>>>>>>");
+            trace($config);
             //创建连接和channel
             self::$conn = new \AMQPConnection($config);
             if (!self::$conn->connect()) {
@@ -143,9 +145,9 @@ class amq
         return $this->getExchange()->declareExchange();
     }
 
-    public function ExchangePublish($message, $routing_key)
+    public function ExchangePublish($message, $routing_key,$flags = AMQP_DURABLE)
     {
-        return $this->getExchange()->publish($message, $routing_key);
+        return $this->getExchange()->publish($message, $routing_key,$flags);
     }
 
     public function setExchangePublish($message, $routing_key)
