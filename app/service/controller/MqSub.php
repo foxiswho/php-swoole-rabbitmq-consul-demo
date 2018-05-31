@@ -18,6 +18,7 @@ class MqSub
         print_r($config);
         $connection = new AMQPStreamConnection($config->Address, $config->Port, config('amq.login'), config('amq.password'));
         $channel    = $connection->channel();
+        $channel->queue_bind('queue_php', 'exchange_php','route_php');
         $channel->queue_declare('queue_php', false, true, false, false);
         $callback = function ($msg) {
             $str= ' [x] Received '.$msg->body."\n";
