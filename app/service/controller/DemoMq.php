@@ -78,12 +78,13 @@ class DemoMq extends Server
             throw new \Exception("Cannot connect to the broker!");
         }
         $channel = new \AMQPChannel($conn);
-
         //消息内容
         $message = "TEST MESSAGE! 测试消息！";
         //创建交换机对象
         $ex = new \AMQPExchange($channel);
         $ex->setName($exchange_name);
+        $ex->setType(AMQP_EX_TYPE_DIRECT);
+        $ex->setFlags(AMQP_DURABLE);
         //发送消息
         //$channel->startTransaction(); //开始事务
         $ex->publish($message, $routing_key);
