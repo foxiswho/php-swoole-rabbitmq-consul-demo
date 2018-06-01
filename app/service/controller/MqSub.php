@@ -19,7 +19,7 @@ class MqSub
         $connection = new AMQPStreamConnection($config->Address, $config->Port, config('amq.login'), config('amq.password'));
         $channel    = $connection->channel();
         $channel->queue_declare('queue_php', false, true, false, false);
-        $channel->exchange_declare('exchange_php','direct',false,true);
+        $channel->exchange_declare('exchange_php','direct',false,true,false,false);
         $channel->queue_bind('queue_php', 'exchange_php','route_php');
 
         //
