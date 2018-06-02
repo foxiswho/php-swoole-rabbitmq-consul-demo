@@ -130,4 +130,13 @@ class consul
         }
         return self::getConsul()->Agent()->serviceRegister($agentServiceRegistration);
     }
+
+    /**删除移除服务
+     * @param $serviceID
+     * @return \DCarbone\PHPConsulAPI\Error|null
+     */
+    public static function removeRegisterService($serviceID)
+    {
+        return self::getConsul()->Agent()->serviceDeregister($serviceID);
+    }
 }
