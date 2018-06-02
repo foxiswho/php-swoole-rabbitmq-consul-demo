@@ -95,4 +95,39 @@ class consul
         }
         return false;
     }
+
+    /**注册服务
+     * @param       $ID
+     * @param       $Name
+     * @param       $Address
+     * @param       $Port
+     * @param bool  $EnableTagOverride
+     * @param null  $Check  \DCarbone\PHPConsulAPI\Agent\AgentServiceCheck
+     * @param array $Checks \DCarbone\PHPConsulAPI\Agent\AgentServiceCheck[]
+     * @return \DCarbone\PHPConsulAPI\Error|null
+     */
+    public static function registerService($ID, $Name, $Address, $Port, $EnableTagOverride = false, $Check = null, $Checks = [])
+    {
+        $config                      = [];
+        $config['ID']                = '';
+        $config['Name']              = '';
+        $config['Port']              = '';//int
+        $config['Address']           = '';
+        $config['EnableTagOverride'] = '';//bool
+        $config['Check']             = '';
+        $config['Checks']            = '';
+        $agentServiceRegistration    = new \DCarbone\PHPConsulAPI\Agent\AgentServiceRegistration();
+        $agentServiceRegistration->setID($ID);
+        $agentServiceRegistration->setName($Name);
+        $agentServiceRegistration->setAddress($Address);
+        $agentServiceRegistration->setPort($Port);
+        $agentServiceRegistration->setEnableTagOverride($EnableTagOverride);
+        if ($Check) {
+            $agentServiceRegistration->setCheck($Check);
+        }
+        if ($Checks) {
+            $agentServiceRegistration->setChecks($Checks);
+        }
+        return self::getConsul()->Agent()->serviceRegister($agentServiceRegistration);
+    }
 }
