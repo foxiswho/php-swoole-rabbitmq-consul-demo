@@ -1,6 +1,8 @@
 # php-thinkphp-swoole-rabbitmq-consul-demo
 
-还未完成
+更多请看 https://blog.csdn.net/fenglailea/article/details/80515310
+
+配合 https://github.com/foxiswho/docker-nginx-php-swoole-rabbitmq-consul 使用
 
 # 一步步从零开始
 ## 下载框架
