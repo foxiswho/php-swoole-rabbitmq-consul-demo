@@ -15,6 +15,8 @@ class DemoMqSub
         //使用 注册中心获取
         $consul = amqConsul::getServicesOne('RabbitMQ');
         trace($consul->getService());
+        //自动注册服务
+        //consul::registerService('php-mq-sub-demo-001',"php-mq-sub-demo","10.2.1.71","9571");
 
         Log::write('实时写入:'.var_export($consul->getService(),true));
 //        $sub=$consul->getAmq();

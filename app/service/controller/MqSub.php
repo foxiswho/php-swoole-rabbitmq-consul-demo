@@ -3,6 +3,7 @@
 namespace app\service\controller;
 
 use app\module\amqConsul;
+use app\module\consul;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use think\facade\Log;
 
@@ -16,6 +17,9 @@ class MqSub
         trace($consul->getService());
         trace('MqSub::::');
         print_r($config);
+        //自动注册服务
+        //consul::registerService('php-mq-sub-demo-002',"php-mq-sub-demo","10.2.1.72","9572");
+
         $connection = new AMQPStreamConnection($config->Address, $config->Port, config('amq.login'), config('amq.password'));
         $channel    = $connection->channel();
         $channel->queue_declare('queue_php', false, true, false, false);
